@@ -10,20 +10,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#1a1a40">
 
+    <!-- Favicon -->
     <link rel="shortcut icon" href="nexum.ico" type="image/x-icon">
 
     <title>NexumUp - Calculadora de Preços</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
         :root {
             --primary-dark: #1a1a40;
             --primary: #270082;
@@ -35,7 +29,6 @@
             --warning: #ffc107;
             --danger: #dc3545;
         }
-
         body {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: var(--text-light);
@@ -45,7 +38,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .nexum-container {
             background: rgba(26, 26, 64, 0.95);
             border-radius: 20px;
@@ -55,257 +47,67 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(122, 11, 192, 0.3);
         }
-
         .nexum-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid rgba(250, 88, 182, 0.3);
         }
+        .nexum-logo { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px; }
+        .nexum-logo i { font-size: 2.5rem; background: linear-gradient(135deg, var(--primary-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nexum-logo h1 { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--text-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nexum-subtitle { color: var(--text-muted); font-size: 1.1rem; }
 
-        .nexum-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
+        /* Abas */
+        .tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid rgba(250, 88, 182, 0.3); }
+        .tab-btn {
+            flex: 1; padding: 12px; background: none; border: none; color: var(--text-light);
+            font-weight: 600; cursor: pointer; transition: all .3s ease;
         }
+        .tab-btn.active { border-bottom: 3px solid var(--accent); color: var(--accent); }
 
-        .nexum-logo i {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .nexum-logo h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--text-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nexum-subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        .input-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-light);
-        }
-
-        .input-label i {
-            color: var(--accent);
-            width: 20px;
-            text-align: center;
-        }
-
+        .input-group { margin-bottom: 25px; }
+        .input-label { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-weight: 600; color: var(--text-light); }
+        .input-label i { color: var(--accent); width: 20px; text-align: center; }
         .nexum-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid rgba(122, 11, 192, 0.5);
-            border-radius: 10px;
-            background: rgba(39, 0, 130, 0.3);
-            color: var(--text-light);
-            font-size: 16px;
-            transition: all 0.3s ease;
+            width: 100%; padding: 15px; border: 2px solid rgba(122, 11, 192, 0.5); border-radius: 10px;
+            background: rgba(39, 0, 130, 0.3); color: var(--text-light); font-size: 16px; transition: all .3s ease;
         }
-
-        .nexum-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(250, 88, 182, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .nexum-input::placeholder {
-            color: var(--text-muted);
-        }
+        .nexum-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(250, 88, 182, 0.1); transform: translateY(-2px); }
+        .nexum-input::placeholder { color: var(--text-muted); }
 
         .nexum-btn {
-            width: 100%;
             background: linear-gradient(135deg, var(--primary-light), var(--accent));
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
+            color: white; border: none; padding: 12px; border-radius: 8px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; transition: all .3s ease;
         }
-
-        .nexum-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(250, 88, 182, 0.3);
-        }
-
-        .nexum-btn:active {
-            transform: translateY(-1px);
-        }
+        .nexum-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(250, 88, 182, 0.3); }
+        .nexum-btn:active { transform: translateY(-1px); }
 
         .result-card {
-            margin-top: 30px;
-            padding: 25px;
+            margin-top: 20px; padding: 20px;
             background: linear-gradient(135deg, rgba(39, 0, 130, 0.4), rgba(122, 11, 192, 0.4));
-            border-radius: 15px;
-            border-left: 4px solid var(--accent);
-            display: none;
+            border-radius: 15px; border-left: 4px solid var(--accent); display: none;
         }
+        .result-card.show { display: block; animation: fadeIn .5s ease; }
 
-        .result-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .result-header i {
-            color: var(--accent);
-            font-size: 1.5rem;
-        }
-
-        .result-header h3 {
-            font-size: 1.3rem;
-        }
-
-        .final-price {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin: 20px 0;
+        .result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .result-header i { color: var(--accent); font-size: 1.5rem; }
+        .final-price { font-size: 2.2rem; font-weight: 800; text-align: center; margin: 20px 0;
             background: linear-gradient(135deg, var(--accent), var(--text-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .breakdown {
-            background: rgba(26, 26, 64, 0.6);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
+        .product-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px; }
+        .product-item input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid rgba(122,11,192,0.5); background: rgba(39,0,130,0.3); color: var(--text-light); }
+        .product-item input:focus { outline: none; border-color: var(--accent); }
+        .delete-btn { background: none; border: none; color: var(--danger); font-size: 1.2rem; cursor: pointer; }
+        .delete-btn:hover { color: #ff6b81; }
 
-        .breakdown-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .breakdown-item:last-child {
-            border-bottom: none;
-        }
-
-        .breakdown-label {
-            color: var(--text-muted);
-        }
-
-        .breakdown-value {
-            font-weight: 600;
-            color: var(--text-light);
-        }
-
-        .profit-positive {
-            color: var(--success) !important;
-        }
-
-        .profit-negative {
-            color: var(--danger) !important;
-        }
-
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-card.show {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        /* Responsivo */
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
-            }
-            
-            .nexum-container {
-                padding: 20px;
-            }
-            
-            .nexum-logo h1 {
-                font-size: 1.8rem;
-            }
-            
-            .final-price {
-                font-size: 2rem;
-            }
-        }
-
-        /* Scroll personalizado */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(26, 26, 64, 0.3);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-light);
-            border-radius: 4px;
-        }
-        .product-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-       }
-        .product-item span {
-            font-size: 1rem;
-       }
-        .delete-btn {
-            background: none;
-            border: none;
-            color: var(--danger);
-            font-size: 1.2rem;
-            cursor: pointer;
-       }
-        .delete-btn:hover {
-            color: #ff6b81;
-       }
-       .product-item {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 10px;
-       }
-       .product-item input {
-            flex: 1;
-       }       
-       .product-item button {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-       }
-       
+        @keyframes fadeIn { from { opacity:0; transform:translateY(20px);} to{ opacity:1; transform:translateY(0);} }
     </style>
 </head>
 <body>
@@ -318,281 +120,133 @@
             <p class="nexum-subtitle">Calculadora Inteligente de Preços</p>
         </div>
 
-        <div class="input-group">
-            <label class="input-label">
-                <i class="fas fa-shopping-bag"></i>
-                Valor de Compra (R$)
-            </label>
-            <input type="number" id="cost" class="nexum-input" placeholder="Ex: 50.00" step="0.01" min="0">
+        <!-- Abas -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('calc')"><i class="fas fa-calculator"></i> Calculadora</button>
+            <button class="tab-btn" onclick="openTab('list')"><i class="fas fa-list"></i> Lista</button>
         </div>
 
-        <div class="input-group">
-            <label class="input-label">
-                <i class="fas fa-chart-line"></i>
-                Lucro Esperado (R$)
-            </label>
-            <input type="number" id="profit" class="nexum-input" placeholder="Ex: 30.00" step="0.01" min="0">
-        </div>
-
-        <div class="input-group">
-            <label class="input-label">
-                <i class="fas fa-credit-card"></i>
-                Taxa da Maquininha (%)
-            </label>
-            <input type="number" id="tax" class="nexum-input" placeholder="Ex: 10.0" step="0.1" min="0" value="10.0">
-        </div>
-
-        <div class="input-group">
-            <label class="input-label">
-                <i class="fas fa-truck"></i>
-                Frete (R$)
-            </label>
-            <input type="number" id="shipping" class="nexum-input" placeholder="Ex: 8.00" step="0.01" min="0" value="0">
-        </div>
-
-        <button class="nexum-btn" onclick="calculatePrice()">
-            <i class="fas fa-calculator"></i> Calcular Preço de Venda
-        </button>
-
-        <div class="result-card" id="result">
-            <div class="result-header">
-                <i class="fas fa-lightbulb"></i>
-                <h3>Preço de Venda Ideal</h3>
+        <!-- Calculadora -->
+        <div id="calc" class="tab-content active">
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-shopping-bag"></i> Valor de Compra (R$)</label>
+                <input type="number" id="cost" class="nexum-input" step="0.01" min="0">
             </div>
-            <div class="final-price" id="finalPrice">R$ 0,00</div>
-            
-            <div class="breakdown">
-                <div class="breakdown-item">
-                    <span class="breakdown-label">Custo Total (Produto + Frete):</span>
-                    <span class="breakdown-value" id="totalCost">R$ 0,00</span>
-                </div>
-                <div class="breakdown-item">
-                    <span class="breakdown-label">Taxa Aplicada:</span>
-                    <span class="breakdown-value" id="taxAmount">R$ 0,00 (0%)</span>
-                </div>
-                <div class="breakdown-item">
-                    <span class="breakdown-label">Valor Líquido Recebido:</span>
-                    <span class="breakdown-value" id="netAmount">R$ 0,00</span>
-                </div>
-                <div class="breakdown-item">
-                    <span class="breakdown-label">Lucro Líquido:</span>
-                    <span class="breakdown-value" id="netProfit">R$ 0,00</span>
-                </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-chart-line"></i> Lucro Esperado (R$)</label>
+                <input type="number" id="profit" class="nexum-input" step="0.01" min="0">
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-credit-card"></i> Taxa da Maquininha (%)</label>
+                <input type="number" id="tax" class="nexum-input" step="0.1" min="0" value="10.0">
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-truck"></i> Frete (R$)</label>
+                <input type="number" id="shipping" class="nexum-input" step="0.01" min="0" value="0">
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-box"></i> Nome do Produto</label>
+                <input type="text" id="productName" class="nexum-input" placeholder="Ex: Geladeira">
+            </div>
+            <button class="nexum-btn" onclick="calculatePrice()"><i class="fas fa-calculator"></i> Calcular</button>
+            <button class="nexum-btn" onclick="addProduct()"><i class="fas fa-plus"></i> Adicionar à Lista</button>
+
+            <div class="result-card" id="result">
+                <div class="result-header"><i class="fas fa-lightbulb"></i><h3>Preço de Venda Ideal</h3></div>
+                <div class="final-price" id="finalPrice">R$ 0,00</div>
             </div>
         </div>
-           <!-- Nova seção de produtos -->
-<div class="input-group">
-    <label class="input-label">
-        <i class="fas fa-box"></i>
-        Nome do Produto
-    </label>
-    <input type="text" id="productName" class="nexum-input" placeholder="Ex: Geladeira">
-</div>
 
-<button class="nexum-btn" onclick="addProduct()">
-    <i class="fas fa-plus"></i> Adicionar Produto
-</button>
-
-<div class="result-card" id="productListCard">
-    <div class="result-header">
-        <i class="fas fa-list"></i>
-        <h3>Lista de Produtos</h3>
-    </div>
-    <div id="productList"></div>
-</div>
-
+        <!-- Lista -->
+        <div id="list" class="tab-content">
+            <div class="result-card show">
+                <div class="result-header"><i class="fas fa-list"></i><h3>Lista de Produtos</h3></div>
+                <div id="productList"></div>
+            </div>
+        </div>
     </div>
 
     <script>
+        function openTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+            document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
+            document.getElementById(tab).classList.add('active');
+        }
+
+        function formatCurrency(v) {
+            return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
+        }
+
         function calculatePrice() {
-            // Obter valores dos inputs
-            const cost = parseFloat(document.getElementById('cost').value) || 0;
-            const profit = parseFloat(document.getElementById('profit').value) || 0;
-            const tax = parseFloat(document.getElementById('tax').value) || 0;
-            const shipping = parseFloat(document.getElementById('shipping').value) || 0;
-
-            // Validar entradas
-            if (cost <= 0) {
-                showError('Por favor, informe o valor de compra do produto!');
-                return;
-            }
-
-            if (profit < 0) {
-                showError('O lucro não pode ser negativo!');
-                return;
-            }
-
-            if (tax < 0 || tax >= 100) {
-                showError('A taxa deve ser entre 0% e 99%!');
-                return;
-            }
-
-            if (shipping < 0) {
-                showError('O frete não pode ser negativo!');
-                return;
-            }
-
-            // Calcular preço de venda
-            const taxDecimal = tax / 100;
-            const salePrice = (cost + shipping + profit) / (1 - taxDecimal);
-
-            // Calcular detalhes
-            const taxAmount = salePrice * taxDecimal;
-            const netAmount = salePrice - taxAmount;
-            const totalCost = cost + shipping;
-            const netProfit = netAmount - totalCost;
-
-            // Formatar para Real Brasileiro
-            const formatCurrency = (value) => {
-                return new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(value);
-            };
-
-            // Exibir resultados
-            document.getElementById('finalPrice').textContent = formatCurrency(salePrice);
-            document.getElementById('totalCost').textContent = formatCurrency(totalCost);
-            document.getElementById('taxAmount').textContent = `${formatCurrency(taxAmount)} (${tax}%)`;
-            document.getElementById('netAmount').textContent = formatCurrency(netAmount);
-            
-            const netProfitElement = document.getElementById('netProfit');
-            netProfitElement.textContent = formatCurrency(netProfit);
-            netProfitElement.className = netProfit >= 0 ? 'breakdown-value profit-positive' : 'breakdown-value profit-negative';
-
-            // Mostrar resultado com animação
-            const resultCard = document.getElementById('result');
-            resultCard.classList.add('show');
-            
-            // Rolagem suave para o resultado
-            resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            const cost = parseFloat(document.getElementById('cost').value)||0;
+            const profit = parseFloat(document.getElementById('profit').value)||0;
+            const tax = parseFloat(document.getElementById('tax').value)||0;
+            const shipping = parseFloat(document.getElementById('shipping').value)||0;
+            const taxDecimal = tax/100;
+            if(cost<=0){alert("Informe o valor de compra!");return;}
+            const salePrice=(cost+shipping+profit)/(1-taxDecimal);
+            document.getElementById('finalPrice').textContent=formatCurrency(salePrice);
+            document.getElementById('result').classList.add('show');
         }
 
-        function showError(message) {
-            alert(message);
+        function addProduct() {
+            const name=document.getElementById('productName').value.trim();
+            const price=document.getElementById('finalPrice').textContent;
+            if(!name){alert("Digite o nome do produto!");return;}
+            if(price==="R$ 0,00"){alert("Calcule o preço primeiro!");return;}
+            const product={id:Date.now(),name,price};
+            let products=JSON.parse(localStorage.getItem('nexumProducts'))||[];
+            products.push(product);
+            localStorage.setItem('nexumProducts',JSON.stringify(products));
+            document.getElementById('productName').value="";
+            renderProducts();
         }
 
-        // Calcular automaticamente ao pressionar Enter
-        document.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                calculatePrice();
-            }
-        });
-
-        // Focar no primeiro campo ao carregar a página
-        window.addEventListener('load', function() {
-            document.getElementById('cost').focus();
-        });
-
-        // Salvar dados localmente (opcional)
-        function saveData() {
-            const data = {
-                cost: document.getElementById('cost').value,
-                profit: document.getElementById('profit').value,
-                tax: document.getElementById('tax').value,
-                shipping: document.getElementById('shipping').value
-            };
-            localStorage.setItem('nexumUpData', JSON.stringify(data));
+        function deleteProduct(id) {
+            let products=JSON.parse(localStorage.getItem('nexumProducts'))||[];
+            products=products.filter(p=>p.id!==id);
+            localStorage.setItem('nexumProducts',JSON.stringify(products));
+            renderProducts();
         }
 
-        // Carregar dados salvos
-        function loadData() {
-            const saved = localStorage.getItem('nexumUpData');
-            if (saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('cost').value = data.cost || '';
-                document.getElementById('profit').value = data.profit || '';
-                document.getElementById('tax').value = data.tax || '10.0';
-                document.getElementById('shipping').value = data.shipping || '0';
-            }
+        function updateProduct(id) {
+            let products = JSON.parse(localStorage.getItem('nexumProducts')) || [];
+            const name = document.getElementById(`name-${id}`).value.trim();
+            const price = document.getElementById(`price-${id}`).value.trim();
+
+            products = products.map(p => {
+                if (p.id === id) {
+                    return { ...p, name, price };
+                }
+                return p;
+            });
+
+            localStorage.setItem('nexumProducts', JSON.stringify(products));
+            renderProducts();
         }
 
-        // Salvar dados ao modificar inputs
-        document.querySelectorAll('.nexum-input').forEach(input => {
-            input.addEventListener('input', saveData);
-        });
+        function renderProducts() {
+            const products = JSON.parse(localStorage.getItem('nexumProducts')) || [];
+            const list = document.getElementById('productList');
+            list.innerHTML = products.length === 0 
+                ? "<p style='color: var(--text-muted)'>Nenhum produto salvo.</p>" 
+                : "";
 
-        // Carregar dados ao iniciar
-        loadData();
-       function addProduct() {
-    const name = document.getElementById('productName').value.trim();
-    const price = document.getElementById('finalPrice').textContent;
-
-    if (!name) {
-        alert("Digite o nome do produto!");
-        return;
-    }
-    if (price === "R$ 0,00") {
-        alert("Calcule o preço de venda antes de adicionar o produto!");
-        return;
-    }
-
-    const product = { id: Date.now(), name, price };
-    let products = JSON.parse(localStorage.getItem('nexumProducts')) || [];
-    products.push(product);
-    localStorage.setItem('nexumProducts', JSON.stringify(products));
-
-    document.getElementById('productName').value = "";
-    renderProducts();
-}
-
-function deleteProduct(id) {
-    let products = JSON.parse(localStorage.getItem('nexumProducts')) || [];
-    products = products.filter(p => p.id !== id);
-    localStorage.setItem('nexumProducts', JSON.stringify(products));
-    renderProducts();
-}
-
-function updateProduct(id, field, value) {
-    let products = JSON.parse(localStorage.getItem('nexumProducts')) || [];
-    products = products.map(p => {
-        if (p.id === id) {
-            return { ...p, [field]: value };
+            products.forEach(p => {
+                const item = document.createElement("div");
+                item.className = "product-item";
+                item.innerHTML = `
+                    <input type="text" value="${p.name}" id="name-${p.id}" class="nexum-input" style="flex:2; margin-right:10px;">
+                    <input type="text" value="${p.price}" id="price-${p.id}" class="nexum-input" style="flex:1; margin-right:10px;">
+                    <button class="nexum-btn" style="padding:8px 12px; font-size:0.9rem;" onclick="updateProduct(${p.id})"><i class="fas fa-save"></i></button>
+                    <button class="delete-btn" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+                `;
+                list.appendChild(item);
+            });
         }
-        return p;
-    });
-    localStorage.setItem('nexumProducts', JSON.stringify(products));
-}
 
-function renderProducts() {
-    const products = JSON.parse(localStorage.getItem('nexumProducts')) || [];
-    const list = document.getElementById('productList');
-    list.innerHTML = "";
-
-    if (products.length === 0) {
-        list.innerHTML = "<p style='color: var(--text-muted)'>Nenhum produto salvo.</p>";
-        return;
-    }
-
-    products.forEach(p => {
-        const item = document.createElement("div");
-        item.className = "product-item";
-
-        item.innerHTML = `
-            <span contenteditable="true" 
-                  onblur="updateProduct(${p.id}, 'name', this.textContent.split(' - ')[0].trim())">
-                  ${p.name}
-            </span>
-            -
-            <strong contenteditable="true" 
-                    onblur="updateProduct(${p.id}, 'price', this.textContent.trim())">
-                    ${p.price}
-            </strong>
-            <button class="delete-btn" onclick="deleteProduct(${p.id})">
-                <i class="fas fa-trash"></i>
-            </button>
-        `;
-
-        list.appendChild(item);
-    });
-
-    document.getElementById("productListCard").classList.add("show");
-}
-
-// Renderizar ao iniciar
-window.addEventListener('load', renderProducts);
-
-
+        window.addEventListener('load', renderProducts);
     </script>
 </body>
 </html>
